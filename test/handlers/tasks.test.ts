@@ -4,6 +4,8 @@ import { taskStore } from "../../src/store/taskStore";
 import { tagStore } from "../../src/store/tagStore";
 import { commentStore } from "../../src/store/commentStore";
 
+const NONEXISTENT_ID = "00000000-0000-0000-0000-000000000000";
+
 const postJson = (path: string, body: unknown) =>
   app.request(path, {
     method: "POST",
@@ -157,7 +159,7 @@ describe("GET /api/tasks/:id", () => {
   });
 
   it("存在しないIDのとき404を返す", async () => {
-    const res = await app.request("/api/tasks/nonexistent-id");
+    const res = await app.request(`/api/tasks/${NONEXISTENT_ID}`);
     const json = await res.json();
 
     expect(res.status).toEqual(404);
@@ -205,7 +207,7 @@ describe("PUT /api/tasks/:id", () => {
   });
 
   it("存在しないIDのとき404を返す", async () => {
-    const res = await putJson("/api/tasks/nonexistent-id", { title: "ウニ" });
+    const res = await putJson(`/api/tasks/${NONEXISTENT_ID}`, { title: "ウニ" });
     const json = await res.json();
 
     expect(res.status).toEqual(404);
@@ -241,7 +243,7 @@ describe("DELETE /api/tasks/:id", () => {
   });
 
   it("存在しないIDのとき404を返す", async () => {
-    const res = await app.request("/api/tasks/nonexistent-id", { method: "DELETE" });
+    const res = await app.request(`/api/tasks/${NONEXISTENT_ID}`, { method: "DELETE" });
     const json = await res.json();
 
     expect(res.status).toEqual(404);
@@ -393,7 +395,7 @@ describe("GET /api/tasks/:id/tags", () => {
   });
 
   it("存在しないタスクIDのとき404を返す", async () => {
-    const res = await app.request("/api/tasks/nonexistent-id/tags");
+    const res = await app.request(`/api/tasks/${NONEXISTENT_ID}/tags`);
     const json = await res.json();
 
     expect(res.status).toEqual(404);
@@ -435,7 +437,7 @@ describe("POST /api/tasks/:id/tags", () => {
   it("存在しないタスクIDのとき404を返す", async () => {
     const tag = await tagStore.create({ name: "タグ" });
 
-    const res = await postJson("/api/tasks/nonexistent-id/tags", { tagId: tag.id });
+    const res = await postJson(`/api/tasks/${NONEXISTENT_ID}/tags`, { tagId: tag.id });
     const json = await res.json();
 
     expect(res.status).toEqual(404);
@@ -445,7 +447,7 @@ describe("POST /api/tasks/:id/tags", () => {
   it("存在しないタグIDのとき404を返す", async () => {
     const task = await taskStore.create({ title: "エビ" });
 
-    const res = await postJson(`/api/tasks/${task.id}/tags`, { tagId: "nonexistent-tag-id" });
+    const res = await postJson(`/api/tasks/${task.id}/tags`, { tagId: NONEXISTENT_ID });
     const json = await res.json();
 
     expect(res.status).toEqual(404);
@@ -505,7 +507,7 @@ describe("DELETE /api/tasks/:id/tags/:tagId", () => {
   it("存在しないタスクIDのとき404を返す", async () => {
     const tag = await tagStore.create({ name: "タグ" });
 
-    const res = await app.request(`/api/tasks/nonexistent-id/tags/${tag.id}`, {
+    const res = await app.request(`/api/tasks/${NONEXISTENT_ID}/tags/${tag.id}`, {
       method: "DELETE",
     });
     const json = await res.json();
