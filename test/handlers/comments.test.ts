@@ -2,12 +2,14 @@
 import app from "../../src/app";
 import { commentStore } from "../../src/store/commentStore";
 import { taskStore } from "../../src/store/taskStore";
+import { userStore } from "../../src/store/userStore";
 
 const NULL_UUID = "00000000-0000-0000-0000-000000000000";
 
 beforeEach(async () => {
   await commentStore.reset();
   await taskStore.reset();
+  await userStore.reset();
 });
 
 /** タスクを作成してIDを返すヘルパー */
@@ -117,17 +119,18 @@ describe("POST /api/tasks/:taskId/comments", () => {
 
   it("authorIdを指定してコメントを作成できる", async () => {
     const taskId = await createTask("イクラ");
+    const user = await userStore.create({ name: "テストユーザー", email: "test@example.com" });
 
     const res = await app.request(`/api/tasks/${taskId}/comments`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: "作者付きコメント", authorId: "user-123" }),
+      body: JSON.stringify({ content: "作者付きコメント", authorId: user.id }),
     });
 
     expect(res.status).toEqual(201);
     const json = await res.json();
     expect(json.comment.content).toEqual("作者付きコメント");
-    expect(json.comment.authorId).toEqual("user-123");
+    expect(json.comment.authorId).toEqual(user.id);
   });
 
   it("authorIdを省略してもコメントを作成できる", async () => {
