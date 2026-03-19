@@ -50,7 +50,7 @@ describe("POST /api/projects/:projectId/milestones", () => {
     console.log("[END] POST /api/projects/:projectId/milestones");
   });
 
-  it("マイルストーンを作成できる", async () => {
+  it("マイルストーンを作成できるんやで", async () => {
     const projectId = await createProject();
 
     const res = await app.request(`/api/projects/${projectId}/milestones`, {
@@ -66,7 +66,7 @@ describe("POST /api/projects/:projectId/milestones", () => {
     expect(json.milestone.status).toEqual("open");
   });
 
-  it("タイトルなしの場合は400を返す", async () => {
+  it("タイトルなしやったら400返すねん", async () => {
     const projectId = await createProject();
 
     const res = await app.request(`/api/projects/${projectId}/milestones`, {
@@ -80,7 +80,7 @@ describe("POST /api/projects/:projectId/milestones", () => {
     expect(json.error).toEqual("Title is required");
   });
 
-  it("存在しないプロジェクトIDの場合は404を返す", async () => {
+  it("存在しないプロジェクトIDやったら404返すねん", async () => {
     const res = await app.request(
       `/api/projects/${NULL_UUID}/milestones`,
       {
@@ -95,7 +95,7 @@ describe("POST /api/projects/:projectId/milestones", () => {
     expect(json.error).toEqual("Project not found");
   });
 
-  it("説明と期日を含むマイルストーンを作成できる", async () => {
+  it("説明と期日を含むマイルストーンも作れるんやで", async () => {
     const projectId = await createProject();
 
     const res = await app.request(`/api/projects/${projectId}/milestones`, {
@@ -114,7 +114,7 @@ describe("POST /api/projects/:projectId/milestones", () => {
     expect(json.milestone.dueDate).toEqual("2026-12-31");
   });
 
-  it("サロゲートペアを含むタイトルでマイルストーンを作成できる", async () => {
+  it("サロゲートペアのタイトルでもマイルストーン作れるんやで", async () => {
     const projectId = await createProject();
 
     const res = await app.request(`/api/projects/${projectId}/milestones`, {
@@ -138,7 +138,7 @@ describe("GET /api/projects/:projectId/milestones", () => {
     console.log("[END] GET /api/projects/:projectId/milestones");
   });
 
-  it("マイルストーン一覧を取得できる", async () => {
+  it("マイルストーン一覧が取得できるんやで", async () => {
     const projectId = await createProject();
     await createMilestone(projectId, "Milestone 1");
     await createMilestone(projectId, "Milestone 2");
@@ -150,7 +150,7 @@ describe("GET /api/projects/:projectId/milestones", () => {
     expect(json.milestones.length).toEqual(2);
   });
 
-  it("マイルストーンが存在しない場合は空配列を返す", async () => {
+  it("マイルストーンがない場合は空配列返すねん", async () => {
     const projectId = await createProject();
 
     const res = await app.request(`/api/projects/${projectId}/milestones`);
@@ -160,7 +160,7 @@ describe("GET /api/projects/:projectId/milestones", () => {
     expect(json.milestones).toEqual([]);
   });
 
-  it("存在しないプロジェクトIDの場合は404を返す", async () => {
+  it("存在しないプロジェクトIDやったら404返すねん", async () => {
     const res = await app.request(
       `/api/projects/${NULL_UUID}/milestones`
     );
@@ -170,7 +170,7 @@ describe("GET /api/projects/:projectId/milestones", () => {
     expect(json.error).toEqual("Project not found");
   });
 
-  it("別プロジェクトのマイルストーンは含まれない", async () => {
+  it("別プロジェクトのマイルストーンは含まれへんねん", async () => {
     const projectId1 = await createProject("Project 1");
     const projectId2 = await createProject("Project 2");
     await createMilestone(projectId1, "Milestone for P1");
@@ -194,7 +194,7 @@ describe("GET /api/projects/:projectId/milestones/:milestoneId", () => {
     console.log("[END] GET /api/projects/:projectId/milestones/:milestoneId");
   });
 
-  it("IDでマイルストーンを取得できる", async () => {
+  it("IDでマイルストーンが取得できるんやで", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId, "Target Milestone");
 
@@ -208,7 +208,7 @@ describe("GET /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.milestone.title).toEqual("Target Milestone");
   });
 
-  it("存在しないIDの場合は404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const projectId = await createProject();
 
     const res = await app.request(
@@ -230,7 +230,7 @@ describe("PUT /api/projects/:projectId/milestones/:milestoneId", () => {
     console.log("[END] PUT /api/projects/:projectId/milestones/:milestoneId");
   });
 
-  it("マイルストーンを更新できる", async () => {
+  it("マイルストーンを更新できるんやで", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId, "Old Title");
 
@@ -248,7 +248,7 @@ describe("PUT /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.milestone.title).toEqual("New Title");
   });
 
-  it("ステータスをclosedに更新できる", async () => {
+  it("ステータスをclosedに更新できるんやで", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId);
 
@@ -266,7 +266,7 @@ describe("PUT /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.milestone.status).toEqual("closed");
   });
 
-  it("ステータスをopenに戻せる", async () => {
+  it("ステータスをopenに戻せるんやで", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId);
 
@@ -293,7 +293,7 @@ describe("PUT /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.milestone.status).toEqual("open");
   });
 
-  it("無効なステータスの場合は400を返す", async () => {
+  it("無効なステータスやったら400返すねん", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId);
 
@@ -311,7 +311,7 @@ describe("PUT /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.error).toEqual("Invalid status");
   });
 
-  it("存在しないIDの場合は404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const projectId = await createProject();
 
     const res = await app.request(
@@ -328,7 +328,7 @@ describe("PUT /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.error).toEqual("Milestone not found");
   });
 
-  it("説明と期日を更新できる", async () => {
+  it("説明と期日も更新できるんやで", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId);
 
@@ -350,7 +350,7 @@ describe("PUT /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.milestone.dueDate).toEqual("2027-01-01");
   });
 
-  it("サロゲートペアを含むタイトルに更新できる", async () => {
+  it("サロゲートペアのタイトルにも更新できるんやで", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId);
 
@@ -382,7 +382,7 @@ describe("DELETE /api/projects/:projectId/milestones/:milestoneId", () => {
     );
   });
 
-  it("マイルストーンを削除できる", async () => {
+  it("マイルストーンを削除できるんやで", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId);
 
@@ -396,7 +396,7 @@ describe("DELETE /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(json.message).toEqual("Milestone deleted");
   });
 
-  it("削除後に取得すると404を返す", async () => {
+  it("削除後に取得すると404返すねん", async () => {
     const projectId = await createProject();
     const milestoneId = await createMilestone(projectId);
 
@@ -412,7 +412,7 @@ describe("DELETE /api/projects/:projectId/milestones/:milestoneId", () => {
     expect(res.status).toEqual(404);
   });
 
-  it("存在しないIDの場合は404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const projectId = await createProject();
 
     const res = await app.request(

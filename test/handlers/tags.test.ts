@@ -15,7 +15,7 @@ describe("GET /api/tags", () => {
     console.log("[END] GET /api/tags");
   });
 
-  it("タグが存在しない場合は空配列を返す", async () => {
+  it("タグがない場合は空配列返すねん", async () => {
     const res = await app.request("/api/tags");
 
     expect(res.status).toEqual(200);
@@ -23,7 +23,7 @@ describe("GET /api/tags", () => {
     expect(json.tags).toEqual([]);
   });
 
-  it("タグ一覧を取得できる", async () => {
+  it("タグ一覧が取得できるんやで", async () => {
     await Promise.all([
       tagStore.create({ name: "マグロ" }),
       tagStore.create({ name: "サーモン" }),
@@ -36,7 +36,7 @@ describe("GET /api/tags", () => {
     expect(json.tags.length).toEqual(2);
   });
 
-  it("タグのフィールドが正しく返される", async () => {
+  it("タグのフィールドが正しく返されるんやで", async () => {
     await tagStore.create({ name: "エビ", color: "#3b82f6" });
 
     const res = await app.request("/api/tags");
@@ -60,7 +60,7 @@ describe("POST /api/tags", () => {
     console.log("[END] POST /api/tags");
   });
 
-  it("タグを作成できる", async () => {
+  it("タグを作成できるんやで", async () => {
     const res = await app.request("/api/tags", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,7 +72,7 @@ describe("POST /api/tags", () => {
     expect(json.tag.name).toEqual("イカ");
   });
 
-  it("colorを指定してタグを作成できる", async () => {
+  it("colorを指定してタグを作成できるんやで", async () => {
     const res = await app.request("/api/tags", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -85,7 +85,7 @@ describe("POST /api/tags", () => {
     expect(json.tag.color).toEqual("#3b82f6");
   });
 
-  it("colorを省略するとデフォルト色が設定される", async () => {
+  it("colorを省略するとデフォルト色が設定されるんやで", async () => {
     const res = await app.request("/api/tags", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -97,7 +97,7 @@ describe("POST /api/tags", () => {
     expect(json.tag.color).toEqual("#6b7280");
   });
 
-  it("nameなしの場合は400を返す", async () => {
+  it("nameなしやったら400返すねん", async () => {
     const res = await app.request("/api/tags", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -109,7 +109,7 @@ describe("POST /api/tags", () => {
     expect(json.error).toEqual("Name is required");
   });
 
-  it("サロゲートペアを含む名前でタグを作成できる", async () => {
+  it("サロゲートペアの名前でもタグを作成できるんやで", async () => {
     const res = await app.request("/api/tags", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -131,7 +131,7 @@ describe("DELETE /api/tags/:id", () => {
     console.log("[END] DELETE /api/tags/:id");
   });
 
-  it("タグを削除できる", async () => {
+  it("タグを削除できるんやで", async () => {
     const tag = await tagStore.create({ name: "イクラ" });
 
     const res = await app.request(`/api/tags/${tag.id}`, {
@@ -143,7 +143,7 @@ describe("DELETE /api/tags/:id", () => {
     expect(json.message).toEqual("Tag deleted");
   });
 
-  it("削除後にタグ一覧から消える", async () => {
+  it("削除後にタグ一覧から消えるんやで", async () => {
     const tag = await tagStore.create({ name: "アナゴ" });
 
     await app.request(`/api/tags/${tag.id}`, { method: "DELETE" });
@@ -153,7 +153,7 @@ describe("DELETE /api/tags/:id", () => {
     expect(json.tags.length).toEqual(0);
   });
 
-  it("存在しないIDの場合は404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const res = await app.request(
       "/api/tags/00000000-0000-0000-0000-000000000000",
       { method: "DELETE" }
