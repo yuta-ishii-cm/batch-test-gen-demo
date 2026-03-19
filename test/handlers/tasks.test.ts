@@ -35,7 +35,7 @@ describe("POST /api/tasks", () => {
     console.log("[END] POST /api/tasks");
   });
 
-  it("タイトルを指定してタスクを作成できる", async () => {
+  it("タイトルを指定してタスクを作成できるんやで", async () => {
     const res = await postJson("/api/tasks", { title: "マグロ" });
     const json = await res.json();
 
@@ -45,7 +45,7 @@ describe("POST /api/tasks", () => {
     expect(json.task.id).toBeDefined();
   });
 
-  it("ステータスを指定してタスクを作成できる", async () => {
+  it("ステータスを指定してタスクを作れるっちゅうねん", async () => {
     const res = await postJson("/api/tasks", { title: "サーモン", status: "in_progress" });
     const json = await res.json();
 
@@ -53,7 +53,7 @@ describe("POST /api/tasks", () => {
     expect(json.task.status).toEqual("in_progress");
   });
 
-  it("説明を含めてタスクを作成できる", async () => {
+  it("説明を含めてタスクを作成できるで", async () => {
     const res = await postJson("/api/tasks", { title: "エビ", description: "詳細説明" });
     const json = await res.json();
 
@@ -61,7 +61,7 @@ describe("POST /api/tasks", () => {
     expect(json.task.description).toEqual("詳細説明");
   });
 
-  it("タイトルが未指定のとき400を返す", async () => {
+  it("タイトルが未指定やったら400返すねん", async () => {
     const res = await postJson("/api/tasks", { description: "説明のみ" });
     const json = await res.json();
 
@@ -69,7 +69,7 @@ describe("POST /api/tasks", () => {
     expect(json.error).toEqual("Title is required");
   });
 
-  it("無効なステータスのとき400を返す", async () => {
+  it("無効なステータスやったら400になるっちゅうねん", async () => {
     const res = await postJson("/api/tasks", { title: "イカ", status: "invalid_status" });
     const json = await res.json();
 
@@ -77,7 +77,7 @@ describe("POST /api/tasks", () => {
     expect(json.error).toEqual("Invalid status");
   });
 
-  it("サロゲートペア文字（森鷗外）をタイトルに使用できる", async () => {
+  it("サロゲートペア文字（森鷗外）もタイトルに使えるんやで", async () => {
     const res = await postJson("/api/tasks", { title: "森鷗外の作品を読む" });
     const json = await res.json();
 
@@ -95,7 +95,7 @@ describe("GET /api/tasks", () => {
     console.log("[END] GET /api/tasks");
   });
 
-  it("タスク一覧を取得できる", async () => {
+  it("タスク一覧を取得できるんやで", async () => {
     await taskStore.create({ title: "マグロ" });
     await taskStore.create({ title: "サーモン" });
 
@@ -106,7 +106,7 @@ describe("GET /api/tasks", () => {
     expect(json.tasks).toHaveLength(2);
   });
 
-  it("タスクが0件のとき空配列を返す", async () => {
+  it("タスクが0件やったら空配列返すねん", async () => {
     const res = await app.request("/api/tasks");
     const json = await res.json();
 
@@ -114,7 +114,7 @@ describe("GET /api/tasks", () => {
     expect(json.tasks).toEqual([]);
   });
 
-  it("statusでフィルタリングできる", async () => {
+  it("statusでフィルタリングできるっちゅうねん", async () => {
     await taskStore.create({ title: "マグロ", status: "todo" });
     await taskStore.create({ title: "サーモン", status: "in_progress" });
     await taskStore.create({ title: "エビ", status: "done" });
@@ -127,7 +127,7 @@ describe("GET /api/tasks", () => {
     expect(json.tasks[0].title).toEqual("サーモン");
   });
 
-  it("存在しないstatusでフィルタリングすると空配列を返す", async () => {
+  it("存在しないstatusでフィルタリングしたら空配列になるで", async () => {
     await taskStore.create({ title: "マグロ" });
 
     const res = await app.request("/api/tasks?status=nonexistent");
@@ -147,7 +147,7 @@ describe("GET /api/tasks/:id", () => {
     console.log("[END] GET /api/tasks/:id");
   });
 
-  it("IDを指定してタスクを取得できる", async () => {
+  it("IDを指定してタスクを取得できるんやで", async () => {
     const task = await taskStore.create({ title: "マグロ" });
 
     const res = await app.request(`/api/tasks/${task.id}`);
@@ -158,7 +158,7 @@ describe("GET /api/tasks/:id", () => {
     expect(json.task.title).toEqual("マグロ");
   });
 
-  it("存在しないIDのとき404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const res = await app.request(`/api/tasks/${NONEXISTENT_ID}`);
     const json = await res.json();
 
@@ -176,7 +176,7 @@ describe("PUT /api/tasks/:id", () => {
     console.log("[END] PUT /api/tasks/:id");
   });
 
-  it("タスクのタイトルを更新できる", async () => {
+  it("タスクのタイトルを更新できるんやで", async () => {
     const task = await taskStore.create({ title: "マグロ" });
 
     const res = await putJson(`/api/tasks/${task.id}`, { title: "サーモン" });
@@ -186,7 +186,7 @@ describe("PUT /api/tasks/:id", () => {
     expect(json.task.title).toEqual("サーモン");
   });
 
-  it("タスクのステータスを更新できる", async () => {
+  it("タスクのステータスを更新できるっちゅうねん", async () => {
     const task = await taskStore.create({ title: "エビ", status: "todo" });
 
     const res = await putJson(`/api/tasks/${task.id}`, { status: "done" });
@@ -196,7 +196,7 @@ describe("PUT /api/tasks/:id", () => {
     expect(json.task.status).toEqual("done");
   });
 
-  it("無効なステータスで更新しようとすると400を返す", async () => {
+  it("無効なステータスで更新しようとしたら400になるで", async () => {
     const task = await taskStore.create({ title: "イカ" });
 
     const res = await putJson(`/api/tasks/${task.id}`, { status: "invalid" });
@@ -206,7 +206,7 @@ describe("PUT /api/tasks/:id", () => {
     expect(json.error).toEqual("Invalid status");
   });
 
-  it("存在しないIDのとき404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const res = await putJson(`/api/tasks/${NONEXISTENT_ID}`, { title: "ウニ" });
     const json = await res.json();
 
@@ -224,7 +224,7 @@ describe("DELETE /api/tasks/:id", () => {
     console.log("[END] DELETE /api/tasks/:id");
   });
 
-  it("タスクを削除できる", async () => {
+  it("タスクを削除できるんやで", async () => {
     const task = await taskStore.create({ title: "マグロ" });
 
     const res = await app.request(`/api/tasks/${task.id}`, { method: "DELETE" });
@@ -234,7 +234,7 @@ describe("DELETE /api/tasks/:id", () => {
     expect(json.message).toEqual("Task deleted");
   });
 
-  it("削除後にタスクが取得できなくなる", async () => {
+  it("削除後にタスクが取得できへんようになるで", async () => {
     const task = await taskStore.create({ title: "サーモン" });
     await app.request(`/api/tasks/${task.id}`, { method: "DELETE" });
 
@@ -242,7 +242,7 @@ describe("DELETE /api/tasks/:id", () => {
     expect(res.status).toEqual(404);
   });
 
-  it("存在しないIDのとき404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const res = await app.request(`/api/tasks/${NONEXISTENT_ID}`, { method: "DELETE" });
     const json = await res.json();
 
@@ -260,7 +260,7 @@ describe("GET /api/tasks/search", () => {
     console.log("[END] GET /api/tasks/search");
   });
 
-  it("タイトルでタスクを検索できる", async () => {
+  it("タイトルでタスクを検索できるんやで", async () => {
     await taskStore.create({ title: "マグロの解体" });
     await taskStore.create({ title: "サーモンの仕入れ" });
 
@@ -272,7 +272,7 @@ describe("GET /api/tasks/search", () => {
     expect(json.tasks[0].title).toEqual("マグロの解体");
   });
 
-  it("説明でタスクを検索できる", async () => {
+  it("説明でタスクを検索できるっちゅうねん", async () => {
     await taskStore.create({ title: "エビ", description: "重要な修正" });
     await taskStore.create({ title: "イカ", description: "機能追加" });
 
@@ -284,7 +284,7 @@ describe("GET /api/tasks/search", () => {
     expect(json.tasks[0].title).toEqual("エビ");
   });
 
-  it("大文字・小文字を区別せず検索できる", async () => {
+  it("大文字・小文字を区別せんと検索できるで", async () => {
     await taskStore.create({ title: "Fix Bug" });
 
     const res = await app.request("/api/tasks/search?q=fix");
@@ -294,7 +294,7 @@ describe("GET /api/tasks/search", () => {
     expect(json.tasks).toHaveLength(1);
   });
 
-  it("qパラメータが未指定のとき400を返す", async () => {
+  it("qパラメータが未指定やったら400返すねん", async () => {
     const res = await app.request("/api/tasks/search");
     const json = await res.json();
 
@@ -302,7 +302,7 @@ describe("GET /api/tasks/search", () => {
     expect(json.error).toEqual("Query parameter 'q' is required");
   });
 
-  it("検索結果が0件のとき空配列を返す", async () => {
+  it("検索結果が0件やったら空配列返すで", async () => {
     await taskStore.create({ title: "マグロ" });
 
     const res = await app.request("/api/tasks/search?q=存在しないキーワード");
@@ -312,7 +312,7 @@ describe("GET /api/tasks/search", () => {
     expect(json.tasks).toEqual([]);
   });
 
-  it("サロゲートペア文字（森鷗外）で検索できる", async () => {
+  it("サロゲートペア文字（森鷗外）でも検索できるんやで", async () => {
     await taskStore.create({ title: "森鷗外の舞姫を読む" });
     await taskStore.create({ title: "夏目漱石を読む" });
 
@@ -334,7 +334,7 @@ describe("GET /api/tasks/stats", () => {
     console.log("[END] GET /api/tasks/stats");
   });
 
-  it("タスクの統計情報を取得できる", async () => {
+  it("タスクの統計情報を取得できるんやで", async () => {
     await taskStore.create({ title: "マグロ", status: "todo" });
     await taskStore.create({ title: "サーモン", status: "todo" });
     await taskStore.create({ title: "エビ", status: "in_progress" });
@@ -350,7 +350,7 @@ describe("GET /api/tasks/stats", () => {
     expect(json.byStatus.done).toEqual(1);
   });
 
-  it("タスクが0件のとき全てが0の統計を返す", async () => {
+  it("タスクが0件やったら全部0の統計返すねん", async () => {
     const res = await app.request("/api/tasks/stats");
     const json = await res.json();
 
@@ -371,7 +371,7 @@ describe("GET /api/tasks/:id/tags", () => {
     console.log("[END] GET /api/tasks/:id/tags");
   });
 
-  it("タスクに紐づくタグ一覧を取得できる", async () => {
+  it("タスクに紐づくタグ一覧を取得できるんやで", async () => {
     const task = await taskStore.create({ title: "マグロ" });
     const tag = await tagStore.create({ name: "バグ" });
     await tagStore.addToTask(task.id, tag.id);
@@ -384,7 +384,7 @@ describe("GET /api/tasks/:id/tags", () => {
     expect(json.tags[0].name).toEqual("バグ");
   });
 
-  it("タグが紐づいていないときは空配列を返す", async () => {
+  it("タグが紐づいてへんときは空配列返すで", async () => {
     const task = await taskStore.create({ title: "サーモン" });
 
     const res = await app.request(`/api/tasks/${task.id}/tags`);
@@ -394,7 +394,7 @@ describe("GET /api/tasks/:id/tags", () => {
     expect(json.tags).toEqual([]);
   });
 
-  it("存在しないタスクIDのとき404を返す", async () => {
+  it("存在しないタスクIDやったら404返すねん", async () => {
     const res = await app.request(`/api/tasks/${NONEXISTENT_ID}/tags`);
     const json = await res.json();
 
@@ -412,7 +412,7 @@ describe("POST /api/tasks/:id/tags", () => {
     console.log("[END] POST /api/tasks/:id/tags");
   });
 
-  it("タスクにタグを追加できる", async () => {
+  it("タスクにタグを追加できるんやで", async () => {
     const task = await taskStore.create({ title: "マグロ" });
     const tag = await tagStore.create({ name: "重要" });
 
@@ -424,7 +424,7 @@ describe("POST /api/tasks/:id/tags", () => {
     expect(json.tags[0].name).toEqual("重要");
   });
 
-  it("tagIdが未指定のとき400を返す", async () => {
+  it("tagIdが未指定やったら400返すねん", async () => {
     const task = await taskStore.create({ title: "サーモン" });
 
     const res = await postJson(`/api/tasks/${task.id}/tags`, {});
@@ -434,7 +434,7 @@ describe("POST /api/tasks/:id/tags", () => {
     expect(json.error).toEqual("tagId is required");
   });
 
-  it("存在しないタスクIDのとき404を返す", async () => {
+  it("存在しないタスクIDやったら404返すねん", async () => {
     const tag = await tagStore.create({ name: "タグ" });
 
     const res = await postJson(`/api/tasks/${NONEXISTENT_ID}/tags`, { tagId: tag.id });
@@ -444,7 +444,7 @@ describe("POST /api/tasks/:id/tags", () => {
     expect(json.error).toEqual("Task not found");
   });
 
-  it("存在しないタグIDのとき404を返す", async () => {
+  it("存在しないタグIDやったら404になるっちゅうねん", async () => {
     const task = await taskStore.create({ title: "エビ" });
 
     const res = await postJson(`/api/tasks/${task.id}/tags`, { tagId: NONEXISTENT_ID });
@@ -454,7 +454,7 @@ describe("POST /api/tasks/:id/tags", () => {
     expect(json.error).toEqual("Tag not found");
   });
 
-  it("同じタグを2回追加しても重複しない", async () => {
+  it("同じタグを2回追加しても重複せーへんで", async () => {
     const task = await taskStore.create({ title: "イカ" });
     const tag = await tagStore.create({ name: "タグ" });
 
@@ -477,7 +477,7 @@ describe("DELETE /api/tasks/:id/tags/:tagId", () => {
     console.log("[END] DELETE /api/tasks/:id/tags/:tagId");
   });
 
-  it("タスクからタグを削除できる", async () => {
+  it("タスクからタグを削除できるんやで", async () => {
     const task = await taskStore.create({ title: "マグロ" });
     const tag = await tagStore.create({ name: "削除対象タグ" });
     await tagStore.addToTask(task.id, tag.id);
@@ -491,7 +491,7 @@ describe("DELETE /api/tasks/:id/tags/:tagId", () => {
     expect(json.message).toEqual("Tag removed from task");
   });
 
-  it("削除後にタグが一覧から消える", async () => {
+  it("削除後にタグが一覧から消えるっちゅうねん", async () => {
     const task = await taskStore.create({ title: "サーモン" });
     const tag = await tagStore.create({ name: "タグ" });
     await tagStore.addToTask(task.id, tag.id);
@@ -504,7 +504,7 @@ describe("DELETE /api/tasks/:id/tags/:tagId", () => {
     expect(json.tags).toEqual([]);
   });
 
-  it("存在しないタスクIDのとき404を返す", async () => {
+  it("存在しないタスクIDやったら404返すねん", async () => {
     const tag = await tagStore.create({ name: "タグ" });
 
     const res = await app.request(`/api/tasks/${NONEXISTENT_ID}/tags/${tag.id}`, {
@@ -516,7 +516,7 @@ describe("DELETE /api/tasks/:id/tags/:tagId", () => {
     expect(json.error).toEqual("Task not found");
   });
 
-  it("タスクに紐づいていないタグを削除しようとすると404を返す", async () => {
+  it("タスクに紐づいてへんタグを削除しようとしたら404になるで", async () => {
     const task = await taskStore.create({ title: "エビ" });
     const tag = await tagStore.create({ name: "タグ" });
 
