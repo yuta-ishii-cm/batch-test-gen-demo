@@ -1,12 +1,12 @@
 // [review-test-pattern] 正常系:✅ 異常系:✅ 境界値:✅
 import app from "../../src/app";
-
-const NONEXISTENT_ID = "00000000-0000-0000-0000-000000000000";
 import { commentStore } from "../../src/store/commentStore";
 import { tagStore } from "../../src/store/tagStore";
 import { taskStore } from "../../src/store/taskStore";
 import { milestoneStore } from "../../src/store/milestoneStore";
 import { projectStore } from "../../src/store/projectStore";
+
+const NONEXISTENT_ID = "00000000-0000-0000-0000-000000000000";
 
 beforeEach(async () => {
   await commentStore.reset();
@@ -25,7 +25,7 @@ describe("POST /api/projects", () => {
     console.log("[END] POST /api/projects");
   });
 
-  it("nameを指定して作成すると201とプロジェクトを返す", async () => {
+  it("nameを指定して作成したら201とプロジェクトが返ってくるんやで", async () => {
     const res = await app.request("/api/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ describe("POST /api/projects", () => {
     expect(json.project.updatedAt).toBeDefined();
   });
 
-  it("nameとdescriptionを指定して作成できる", async () => {
+  it("nameとdescriptionを指定してもちゃんと作れるんやで", async () => {
     const res = await app.request("/api/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -54,7 +54,7 @@ describe("POST /api/projects", () => {
     expect(json.project.description).toEqual("説明文");
   });
 
-  it("サロゲートペアを含む名前で作成できる", async () => {
+  it("サロゲートペアを含む名前でも作れるっちゅうねん", async () => {
     const res = await app.request("/api/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -66,7 +66,7 @@ describe("POST /api/projects", () => {
     expect(json.project.name).toEqual("森鷗外プロジェクト");
   });
 
-  it("nameがなければ400を返す", async () => {
+  it("nameがなかったら400返すねん", async () => {
     const res = await app.request("/api/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -78,7 +78,7 @@ describe("POST /api/projects", () => {
     expect(json.error).toBeDefined();
   });
 
-  it("nameが空文字列のとき400を返す", async () => {
+  it("nameが空文字列やったら400になるで", async () => {
     const res = await app.request("/api/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -100,7 +100,7 @@ describe("GET /api/projects", () => {
     console.log("[END] GET /api/projects");
   });
 
-  it("プロジェクトがなければ空配列を返す", async () => {
+  it("プロジェクトがなかったら空配列返ってくるんやで", async () => {
     const res = await app.request("/api/projects");
     const json = await res.json();
 
@@ -108,7 +108,7 @@ describe("GET /api/projects", () => {
     expect(json.projects).toEqual([]);
   });
 
-  it("作成したプロジェクトを全件返す", async () => {
+  it("作成したプロジェクトを全件返してくれるねん", async () => {
     await projectStore.create({ name: "Project A" });
     await projectStore.create({ name: "Project B" });
 
@@ -119,7 +119,7 @@ describe("GET /api/projects", () => {
     expect(json.projects).toHaveLength(2);
   });
 
-  it("statusクエリでフィルタリングできる", async () => {
+  it("statusクエリでフィルタリングできるんやで", async () => {
     await projectStore.create({ name: "Active Project" });
     const toArchive = await projectStore.create({ name: "Archived Project" });
     await projectStore.update(toArchive.id, { status: "archived" });
@@ -132,7 +132,7 @@ describe("GET /api/projects", () => {
     expect(json.projects[0].status).toEqual("archived");
   });
 
-  it("存在しないstatusでフィルタリングすると空配列を返す", async () => {
+  it("存在しないstatusでフィルタリングしたら空配列になるっちゅうねん", async () => {
     await projectStore.create({ name: "Project A" });
 
     const res = await app.request("/api/projects?status=unknown");
@@ -152,7 +152,7 @@ describe("GET /api/projects/:id", () => {
     console.log("[END] GET /api/projects/:id");
   });
 
-  it("存在するIDで取得できる", async () => {
+  it("存在するIDやったらちゃんと取得できるんやで", async () => {
     const created = await projectStore.create({ name: "Target Project" });
 
     const res = await app.request(`/api/projects/${created.id}`);
@@ -163,7 +163,7 @@ describe("GET /api/projects/:id", () => {
     expect(json.project.name).toEqual("Target Project");
   });
 
-  it("存在しないIDで404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const res = await app.request(`/api/projects/${NONEXISTENT_ID}`);
     const json = await res.json();
 
@@ -181,7 +181,7 @@ describe("PUT /api/projects/:id", () => {
     console.log("[END] PUT /api/projects/:id");
   });
 
-  it("nameを更新できる", async () => {
+  it("nameを更新できるんやで", async () => {
     const created = await projectStore.create({ name: "Old Name" });
 
     const res = await app.request(`/api/projects/${created.id}`, {
@@ -195,7 +195,7 @@ describe("PUT /api/projects/:id", () => {
     expect(json.project.name).toEqual("New Name");
   });
 
-  it("descriptionを更新できる", async () => {
+  it("descriptionも更新できるっちゅうねん", async () => {
     const created = await projectStore.create({ name: "Project" });
 
     const res = await app.request(`/api/projects/${created.id}`, {
@@ -209,7 +209,7 @@ describe("PUT /api/projects/:id", () => {
     expect(json.project.description).toEqual("新しい説明");
   });
 
-  it("statusをarchivedに更新できる", async () => {
+  it("statusをarchivedに更新できるんやで", async () => {
     const created = await projectStore.create({ name: "Project" });
 
     const res = await app.request(`/api/projects/${created.id}`, {
@@ -223,7 +223,7 @@ describe("PUT /api/projects/:id", () => {
     expect(json.project.status).toEqual("archived");
   });
 
-  it("statusをcompletedに更新できる", async () => {
+  it("statusをcompletedに更新できるんやで", async () => {
     const created = await projectStore.create({ name: "Project" });
 
     const res = await app.request(`/api/projects/${created.id}`, {
@@ -237,7 +237,7 @@ describe("PUT /api/projects/:id", () => {
     expect(json.project.status).toEqual("completed");
   });
 
-  it("無効なstatusで400を返す", async () => {
+  it("無効なstatusやったら400になるで", async () => {
     const created = await projectStore.create({ name: "Project" });
 
     const res = await app.request(`/api/projects/${created.id}`, {
@@ -251,7 +251,7 @@ describe("PUT /api/projects/:id", () => {
     expect(json.error).toBeDefined();
   });
 
-  it("存在しないIDで404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const res = await app.request(`/api/projects/${NONEXISTENT_ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -263,7 +263,7 @@ describe("PUT /api/projects/:id", () => {
     expect(json.error).toBeDefined();
   });
 
-  it("サロゲートペアを含む名前に更新できる", async () => {
+  it("サロゲートペアを含む名前に更新できるっちゅうねん", async () => {
     const created = await projectStore.create({ name: "Project" });
 
     const res = await app.request(`/api/projects/${created.id}`, {
@@ -287,7 +287,7 @@ describe("DELETE /api/projects/:id", () => {
     console.log("[END] DELETE /api/projects/:id");
   });
 
-  it("存在するプロジェクトを削除できる", async () => {
+  it("存在するプロジェクトを削除できるんやで", async () => {
     const created = await projectStore.create({ name: "To Delete" });
 
     const res = await app.request(`/api/projects/${created.id}`, {
@@ -299,7 +299,7 @@ describe("DELETE /api/projects/:id", () => {
     expect(json.message).toEqual("Project deleted");
   });
 
-  it("削除後に取得すると404を返す", async () => {
+  it("削除後に取得しようとしたら404になるんやで", async () => {
     const created = await projectStore.create({ name: "To Delete" });
     await app.request(`/api/projects/${created.id}`, { method: "DELETE" });
 
@@ -310,7 +310,7 @@ describe("DELETE /api/projects/:id", () => {
     expect(json.error).toBeDefined();
   });
 
-  it("存在しないIDで404を返す", async () => {
+  it("存在しないIDやったら404返すねん", async () => {
     const res = await app.request(`/api/projects/${NONEXISTENT_ID}`, {
       method: "DELETE",
     });
@@ -330,7 +330,7 @@ describe("GET /api/projects/:id/tasks", () => {
     console.log("[END] GET /api/projects/:id/tasks");
   });
 
-  it("プロジェクトに属するタスクを返す", async () => {
+  it("プロジェクトに属するタスクを返してくれるんやで", async () => {
     const project = await projectStore.create({ name: "Project With Tasks" });
     await taskStore.create({ title: "マグロ", projectId: project.id });
     await taskStore.create({ title: "サーモン", projectId: project.id });
@@ -343,7 +343,7 @@ describe("GET /api/projects/:id/tasks", () => {
     expect(json.tasks.every((t: { projectId: string }) => t.projectId === project.id)).toEqual(true);
   });
 
-  it("他のプロジェクトのタスクは含まない", async () => {
+  it("他のプロジェクトのタスクは含まれへんねん", async () => {
     const project1 = await projectStore.create({ name: "Project 1" });
     const project2 = await projectStore.create({ name: "Project 2" });
     await taskStore.create({ title: "エビ", projectId: project1.id });
@@ -357,7 +357,7 @@ describe("GET /api/projects/:id/tasks", () => {
     expect(json.tasks[0].title).toEqual("エビ");
   });
 
-  it("タスクがなければ空配列を返す", async () => {
+  it("タスクがなかったら空配列返ってくるんやで", async () => {
     const project = await projectStore.create({ name: "Empty Project" });
 
     const res = await app.request(`/api/projects/${project.id}/tasks`);
@@ -367,7 +367,7 @@ describe("GET /api/projects/:id/tasks", () => {
     expect(json.tasks).toEqual([]);
   });
 
-  it("存在しないプロジェクトIDで404を返す", async () => {
+  it("存在しないプロジェクトIDやったら404返すねん", async () => {
     const res = await app.request(`/api/projects/${NONEXISTENT_ID}/tasks`);
     const json = await res.json();
 
