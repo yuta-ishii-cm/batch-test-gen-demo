@@ -1,5 +1,7 @@
 // [review-test-pattern] 正常系:✅ 異常系:✅ 境界値:✅
 import app from "../../src/app";
+
+const NONEXISTENT_ID = "00000000-0000-0000-0000-000000000000";
 import { commentStore } from "../../src/store/commentStore";
 import { tagStore } from "../../src/store/tagStore";
 import { taskStore } from "../../src/store/taskStore";
@@ -162,7 +164,7 @@ describe("GET /api/projects/:id", () => {
   });
 
   it("存在しないIDで404を返す", async () => {
-    const res = await app.request("/api/projects/non-existent-id");
+    const res = await app.request(`/api/projects/${NONEXISTENT_ID}`);
     const json = await res.json();
 
     expect(res.status).toEqual(404);
@@ -250,7 +252,7 @@ describe("PUT /api/projects/:id", () => {
   });
 
   it("存在しないIDで404を返す", async () => {
-    const res = await app.request("/api/projects/non-existent-id", {
+    const res = await app.request(`/api/projects/${NONEXISTENT_ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: "New Name" }),
@@ -309,7 +311,7 @@ describe("DELETE /api/projects/:id", () => {
   });
 
   it("存在しないIDで404を返す", async () => {
-    const res = await app.request("/api/projects/non-existent-id", {
+    const res = await app.request(`/api/projects/${NONEXISTENT_ID}`, {
       method: "DELETE",
     });
     const json = await res.json();
@@ -366,7 +368,7 @@ describe("GET /api/projects/:id/tasks", () => {
   });
 
   it("存在しないプロジェクトIDで404を返す", async () => {
-    const res = await app.request("/api/projects/non-existent-id/tasks");
+    const res = await app.request(`/api/projects/${NONEXISTENT_ID}/tasks`);
     const json = await res.json();
 
     expect(res.status).toEqual(404);
